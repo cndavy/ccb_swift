@@ -1,12 +1,12 @@
-package han;
+package han.vo;
 
 import com.prowidesoftware.swift.model.field.Field61;
 import com.prowidesoftware.swift.model.field.Field86;
 
 public class F61_86
 {
-    protected Field61 f61;
-    protected Field86 f86;
+    private Field61 f61;
+    private Field86 f86;
 
     public F61_86(Field61 f61, Field86 f86)
     {

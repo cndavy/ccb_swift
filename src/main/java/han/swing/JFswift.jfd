@@ -22,8 +22,8 @@ new FormModel {
 					"actionCommand": "text"
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemInput"
-						"text": "EXCEL||文本"
-						"actionCommand": "EXCEL||文本"
+						"text": "EXCEL||文本|PDF"
+						"actionCommand": "EXCEL||文本|PDF"
 						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "menuItemInputMouseReleased", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {

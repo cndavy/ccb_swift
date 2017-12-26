@@ -2,10 +2,13 @@
  * Created by JFormDesigner on Thu Dec 21 10:54:38 CST 2017
  */
 
-package han;
+package han.swing;
 
 import com.prowidesoftware.swift.model.field.Field61;
 import com.prowidesoftware.swift.model.field.Field86;
+import han.utils.*;
+import han.vo.F61_86;
+import org.jdesktop.layout.GroupLayout;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -19,7 +22,6 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import org.jdesktop.layout.GroupLayout;
 
 /**
  * @author han
@@ -64,12 +66,14 @@ public class JFswift extends JFrame {
         chooser.addChoosableFileFilter(filter);
         filter = new FileNameExtensionFilter("文本文件","txt");
         chooser.addChoosableFileFilter(filter);
+        filter = new FileNameExtensionFilter("PDF","pdf");
+        chooser.addChoosableFileFilter(filter);
         int result= chooser.showOpenDialog (JFswift.this);
         if (result==JFileChooser.APPROVE_OPTION){
             this.inputTxtFile=chooser.getSelectedFile();
             chooser.setVisible(false);
             if (inputTxtFile.exists() ){
-                textArea1.append("导入EXCEL文件：->\n");
+                textArea1.append("导入文件：->\n");
                 textArea1.append(inputTxtFile.getAbsolutePath());
                 textArea1.append("\n");
             }else{
@@ -138,9 +142,12 @@ public class JFswift extends JFrame {
         SwiftUtils swift=SwiftUtils.getInstance();
         IccbBankFileUtils inputfile=null;
         if (inputTxtFile.getName().substring(inputTxtFile.getName().lastIndexOf(".")+1).compareTo("xls")==0 )
-                inputfile=ExcelUtils.getInstance();
+                inputfile= ExcelUtils.getInstance();
+        else if (inputTxtFile.getName().substring(inputTxtFile.getName().lastIndexOf(".")+1).compareTo("pdf")==0 ){
+            inputfile= PdfUtils.getInstance();
+        }
         else {
-            inputfile=txtUtls.getInstance();
+            inputfile= txtUtils.getInstance();
         }
         inputfile.readerFile(inputTxtFile.getPath());
         sCurDate="";
@@ -254,9 +261,10 @@ public class JFswift extends JFrame {
                 menuFile.setActionCommand("text");
 
                 //---- menuItemInput ----
-                menuItemInput.setText("EXCEL||\u6587\u672c");
-                menuItemInput.setActionCommand("EXCEL||\u6587\u672c");
+                menuItemInput.setText("EXCEL||\u6587\u672c|PDF");
+                menuItemInput.setActionCommand("EXCEL||\u6587\u672c|PDF");
                 menuItemInput.addMouseListener(new MouseAdapter() {
+                    @Override
                     public void mouseReleased(MouseEvent e) {
                         menuItemInputMouseReleased(e);
                     }
@@ -266,6 +274,7 @@ public class JFswift extends JFrame {
                 //---- menuItemOutput ----
                 menuItemOutput.setText("MT940\u6587\u4ef6");
                 menuItemOutput.addMouseListener(new MouseAdapter() {
+                    @Override
                     public void mouseReleased(MouseEvent e) {
                         menuItemOutputMouseReleased(e);
                     }
@@ -282,6 +291,7 @@ public class JFswift extends JFrame {
                 menuItemTrans.setText("\u7acb\u5373\u8f6c\u6362\u6587\u4ef6");
                 menuItemTrans.setActionCommand("text");
                 menuItemTrans.addMouseListener(new MouseAdapter() {
+                    @Override
                     public void mouseReleased(MouseEvent e) {
                         menuItemTransMouseReleased(e);
                     }

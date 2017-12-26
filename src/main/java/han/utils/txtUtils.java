@@ -1,4 +1,4 @@
-package han;
+package han.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,14 +10,14 @@ import java.util.Scanner;
 /**
  * Created by han on 2017/12/25.
  */
-public class txtUtls  implements  IccbBankFileUtils{
-    private static txtUtls ourInstance = new txtUtls();
+public class txtUtils implements IccbBankFileUtils {
+    private static txtUtils ourInstance = new txtUtils();
     private List <String[]>lineList =null;
-    public static txtUtls getInstance() {
+    public static txtUtils getInstance() {
         return ourInstance;
     }
 
-    private txtUtls() {
+    private txtUtils() {
 
     }
 
@@ -93,13 +93,7 @@ public class txtUtls  implements  IccbBankFileUtils{
     @Override
     public String get币种(int i) {
         String cur = lineList.get(i + 1)[6];
-        switch (cur){
-            case "人民币元":
-                return  "CNY";
-            case "美元":
-                return  "USD";
-            default:return cur;
-        }
+       return  new CurUtils(cur).invoke();
 
     }
 

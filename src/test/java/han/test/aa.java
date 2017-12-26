@@ -1,4 +1,4 @@
-package han;
+package han.test;
 
 import com.prowidesoftware.swift.io.ConversionService;
 import com.prowidesoftware.swift.io.IConversionService;

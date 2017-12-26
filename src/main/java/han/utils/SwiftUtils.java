@@ -1,8 +1,9 @@
-package han;
+package han.utils;
 
 import com.prowidesoftware.swift.model.*;
 import com.prowidesoftware.swift.model.field.*;
 import com.prowidesoftware.swift.model.mt.mt9xx.MT940;
+import han.vo.F61_86;
 
 import java.util.List;
 
@@ -102,8 +103,8 @@ public class SwiftUtils
     public SwiftUtils set61_86(List<F61_86> list) {
         for (F61_86 o : list) {
             this.m.append(new SwiftTagListBlock()
-                    .append(o.f61)
-                    .append(o.f86));
+                    .append(o.getF61())
+                    .append(o.getF86()));
         }
         return this;
     }

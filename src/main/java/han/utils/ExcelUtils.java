@@ -1,4 +1,4 @@
-package han;
+package han.utils;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -6,6 +6,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.junit.Test;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -110,14 +111,9 @@ public class ExcelUtils implements IccbBankFileUtils {
     @Override
     public  String get币种(int i){
          String cur= readCell(10+i,4).getStringCellValue();
-        switch (cur){
-            case "人民币元":
-                return  "CNY";
-            case "美元":
-                return  "USD";
-            default:return cur;
-        }
+        return new CurUtils(cur).invoke();
     }
+
     @Override
     public  String get对方户名(int i){
         return readCell(10+i,5).getStringCellValue();
@@ -161,6 +157,7 @@ public class ExcelUtils implements IccbBankFileUtils {
 
     }
     @Override
+
     public  String get凭证种类(int i){
         return readCell(10+i,13).getStringCellValue() ;
 
@@ -175,6 +172,7 @@ public class ExcelUtils implements IccbBankFileUtils {
         return readCell(10+i,15).getStringCellValue() ;
 
     }
+    @Test
     public static void main(String [] args){
         ExcelUtils excelUtils = ExcelUtils.getInstance();
         excelUtils.readerFile("E:\\git\\pw-swift-core\\对账单\\37101002710051003563(1).xls");
@@ -189,4 +187,5 @@ public class ExcelUtils implements IccbBankFileUtils {
                     +" "+excelUtils.get交易流水号(i) +excelUtils.get关联账户(i) );
         }
     }
+
 }
