@@ -24,16 +24,19 @@ public class txtUtils implements IccbBankFileUtils {
     @Override
     public void readerFile(String path) {
          lineList = new ArrayList<String[]>();
-        String pattern="";
+        //System.out.println(path);
         Scanner scanner= null;
         try {
-            scanner = new Scanner(new File(path));
+            scanner = new Scanner(new File(path),"UTF-8");
             while (scanner.hasNextLine()){
-                String txt=scanner.nextLine();
+                String txt= null;
+                txt =   (scanner.nextLine() );
+                System.out.print(txt);
                 String[] spl= txt.split(",");
                 for (int i=0 ;i<spl.length;i++){
                     spl[i]=spl[i].substring(1,spl[i].length()-1);
                 }
+                //System.out.print("spl count="+ spl.length);
                 lineList.add(spl);
 
             }

@@ -30,17 +30,7 @@ public class PdfUtils implements IccbBankFileUtils{
 
         try
         {
-            // 方式一：
-            /**
-             InputStream input = null;
-             input = new FileInputStream( pdfFile );
-             //加载 pdf 文档
-             PDFParser parser = new PDFParser(new RandomAccessBuffer(input));
-             parser.parse();
-             document = parser.getPDDocument();
-             **/
 
-            // 方式二：
             document=PDDocument.load(pdfFile);
 
             // 获取页码
@@ -80,9 +70,9 @@ public class PdfUtils implements IccbBankFileUtils{
             PDFTextStripper s=new PDFTextStripper();
             s.setStartPage(0);
             s.setEndPage(document.getNumberOfPages());
-            String content = s.getText(document);
+            String content = s.getText(document) ;
             Pattern pattern=Pattern.compile("借方交易笔数：\\s*(\\d)+\\s*贷方发生额：[\\d|.]+\\s*贷方交易笔数：(\\d)+");
-            Matcher m=pattern.matcher(new String(content.getBytes(),"UTF-8"));
+            Matcher m=pattern.matcher(content);
 
             if (m.find()) {
                  return Integer.parseInt(m.group(1))+ Integer.parseInt(m.group(2));

@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.pdfbox:pdfbox:2.0.8">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.m2/repository/org/apache/pdfbox/pdfbox/2.0.8/pdfbox-2.0.8.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.m2/repository/org/apache/pdfbox/pdfbox/2.0.8/pdfbox-2.0.8-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.m2/repository/org/apache/pdfbox/pdfbox/2.0.8/pdfbox-2.0.8-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../PDF/lib/pdfbox-2.0.8-src.zip!/pdfbox-2.0.8/debugger/src/main/java" />
+      <root url="jar://$PROJECT_DIR$/../PDF/lib/pdfbox-2.0.8-src.zip!/pdfbox-2.0.8/examples/src/main/java" />
+      <root url="jar://$PROJECT_DIR$/../PDF/lib/pdfbox-2.0.8-src.zip!/pdfbox-2.0.8/examples/src/test/java" />
+      <root url="jar://$PROJECT_DIR$/../PDF/lib/pdfbox-2.0.8-src.zip!/pdfbox-2.0.8/fontbox/src/main/java" />
+      <root url="jar://$PROJECT_DIR$/../PDF/lib/pdfbox-2.0.8-src.zip!/pdfbox-2.0.8/fontbox/src/test/java" />
+      <root url="jar://$PROJECT_DIR$/../PDF/lib/pdfbox-2.0.8-src.zip!/pdfbox-2.0.8/pdfbox/src/main/java" />
+      <root url="jar://$PROJECT_DIR$/../PDF/lib/pdfbox-2.0.8-src.zip!/pdfbox-2.0.8/pdfbox/src/test/java" />
+      <root url="jar://$PROJECT_DIR$/../PDF/lib/pdfbox-2.0.8-src.zip!/pdfbox-2.0.8/preflight/src/main/java" />
+      <root url="jar://$PROJECT_DIR$/../PDF/lib/pdfbox-2.0.8-src.zip!/pdfbox-2.0.8/preflight/src/test/java" />
+      <root url="jar://$PROJECT_DIR$/../PDF/lib/pdfbox-2.0.8-src.zip!/pdfbox-2.0.8/tools/src/main/java" />
+      <root url="jar://$PROJECT_DIR$/../PDF/lib/pdfbox-2.0.8-src.zip!/pdfbox-2.0.8/tools/src/test/java" />
+      <root url="jar://$PROJECT_DIR$/../PDF/lib/pdfbox-2.0.8-src.zip!/pdfbox-2.0.8/xmpbox/src/main/java" />
+      <root url="jar://$PROJECT_DIR$/../PDF/lib/pdfbox-2.0.8-src.zip!/pdfbox-2.0.8/xmpbox/src/test/java" />
+    </SOURCES>
+  </library>
+</component>
