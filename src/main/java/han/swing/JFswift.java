@@ -61,9 +61,9 @@ public class JFswift extends JFrame {
         chooser.setCurrentDirectory(new File("."));
         //  chooser.setSelectedFile(new File("CCB.txt"));
         FileFilter filter;
-//        filter = new FileNameExtensionFilter("EXCEL","xls","xlsx");
-//        chooser.setAcceptAllFileFilterUsed(false);
-//        chooser.addChoosableFileFilter(filter);
+        filter = new FileNameExtensionFilter("EXCEL","xls","xlsx");
+        chooser.setAcceptAllFileFilterUsed(false);
+        chooser.addChoosableFileFilter(filter);
         filter = new FileNameExtensionFilter("文本文件","txt");
         chooser.addChoosableFileFilter(filter);
 //        filter = new FileNameExtensionFilter("PDF","pdf");
@@ -153,78 +153,69 @@ public class JFswift extends JFrame {
         ArrayList<F61_86> list = new ArrayList<F61_86>();
         BigDecimal 期初余额=null;
         for ( int i=0 ;i<iLen;i++){
-            if (sCurDate.compareTo(inputfile.get记账日期(i))==0){ //same date
-                isSameDay=true;
-            }
-            else{
-                isSameDay=false;
-            }
-            sCurDate=inputfile.get记账日期(i);
+            String sCurType="D";
 
-            if (isSameDay){
-
-            }
-            else {
-                swift.setMt940Head();
-                swift.set发报行编号(inputfile.get账号()) ;
-                swift.set账户标示(inputfile.get账号());
-                swift.set对账_分页序号(new BigDecimal(inputfile.get账户明细编号(i)),1);
-                BigDecimal 余额= (inputfile.get余额(i));
+                BigDecimal 发生额=null;
                 BigDecimal 借发生额= (inputfile.get借方发生额(i));
                 BigDecimal 贷发生额= (inputfile.get贷方发生额(i));
+                BigDecimal 余额= (inputfile.get余额(i));
+                if (借发生额.compareTo(new BigDecimal(0.0))==0){
+
+                    发生额=贷发生额;
+                }
+                if (贷发生额.compareTo(new BigDecimal(0.0))==0){
+
+                    continue; //只处理贷方
+                }
+                swift.setMt940Head();
+                swift.set发报行编号(inputfile.get账号(i)) ;
+                swift.set账户标示(inputfile.get账号(i));
+                System.out.println(i);
+                swift.set对账_分页序号(new BigDecimal(inputfile.get账户明细编号(i)),1);
+
+                  借发生额= (inputfile.get借方发生额(i));
+                  贷发生额= (inputfile.get贷方发生额(i));
 
                 期初余额=余额.add(借发生额).subtract(贷发生额)  ;
 //
-            }
-
-            BigDecimal 余额= (inputfile.get余额(i) );
-            BigDecimal 发生额=null;
-            BigDecimal 借发生额= (inputfile.get借方发生额(i));
-            BigDecimal 贷发生额= (inputfile.get贷方发生额(i));
-            String sCurType="D";
-            if (借发生额.compareTo(new BigDecimal(0.0))==0){
-                sCurType="D";
-                发生额=贷发生额;
-            }
-            if (贷发生额.compareTo(new BigDecimal(0.0))==0){
-
-                sCurType="C";
-                发生额=借发生额;
-                continue; //只处理贷方
-            }
-            //BigDecimal 期初余额=余额.add(借发生额).subtract(贷发生额)  ;
-            Field61 f61= new Field61().setValueDate(inputfile.get交易时间(i))
-                    .setEntryDate(inputfile.getEntryDate(i)).setDCMark(sCurType).setFundsCode("D").setAmount(发生额.setScale(2,BigDecimal.ROUND_HALF_UP))
-                    .setTransactionType("NMSC").setIdentificationCode("NONREF")
-                    //  .setReferenceForTheAccountOwner("")
-                    // .setReferenceOfTheAccountServicingInstitution("")
-                    .setSupplementaryDetails(inputfile.get交易流水号(i)) //交易流水号
-                    ;
-            Field86 f86= null
-                    ;
-             {
-                f86 = new Field86().setComponent1(inputfile.get交易流水号(i))
-                        .setComponent2(" "+inputfile.get对方户名(i)+" "+inputfile.get对方开户机构(i) )
-                        .setComponent3("//"+inputfile.get备注(i))
-                        .setComponent4("对方账号"+inputfile.get对方账号(i));
-            }
-            F61_86 f61_86=new F61_86(f61,f86);
-            list.add(f61_86);
-            if(inputfile.get记账日期(i+1)==null||!(inputfile.get记账日期(i).compareTo(inputfile.get记账日期(i+1))==0) ){
-                //last record in a day
-                swift.set61_86(list);
-                swift.set账面余额(inputfile.get币种(i),inputfile.get记账日期(i),余额.setScale(2,BigDecimal.ROUND_HALF_UP),sCurType);
-
-
                 if (余额.compareTo(期初余额)>0){
                     sCurType="D";
                 }else{
                     sCurType="C";
                 }
                 期初余额.setScale(2,BigDecimal.ROUND_HALF_UP) ;
-                swift.set期初余额(inputfile.get币种(i),inputfile.get记账日期(i),
-                           期初余额.setScale(2,BigDecimal.ROUND_HALF_UP) ,sCurType);
+                swift.set期初余额(inputfile.get币种(i),inputfile.get交易时间(i),
+                        期初余额.setScale(2,BigDecimal.ROUND_HALF_UP) ,sCurType);
 
+
+
+
+            //BigDecimal 期初余额=余额.add(借发生额).subtract(贷发生额)  ;
+            Field61 f61= new Field61().setValueDate(inputfile.get交易时间(i))
+                    .setEntryDate(inputfile.getEntryDate(i)).setDCMark("C").setFundsCode("D").setAmount(发生额.setScale(2,BigDecimal.ROUND_HALF_UP))
+                    .setTransactionType("NMSC").setIdentificationCode("NONREF")
+                    //  .setReferenceForTheAccountOwner("")
+                    // .setReferenceOfTheAccountServicingInstitution("")
+                   // .setSupplementaryDetails(inputfile.get交易流水号(i)) //交易流水号
+                    .setSupplementaryDetails(inputfile.get对方账号(i))
+                    ;
+            Field86 f86= null
+                    ;
+             {
+                f86 = new Field86()//.setComponent1(inputfile.get交易流水号(i))
+                        .setComponent1(" "+inputfile.get对方户名(i)+" "+inputfile.get对方开户机构(i) )
+                        .setComponent2("//"+inputfile.get备注(i))
+                     //   .setComponent4(inputfile.get对方账号(i))
+                ;
+            }
+            F61_86 f61_86=new F61_86(f61,f86);
+            list.add(f61_86);
+         //   if(inputfile.get记账日期(i+1)==null||!(inputfile.get记账日期(i).compareTo(inputfile.get记账日期(i+1))==0) )
+            {
+
+                //last record in a day
+                swift.set61_86(list);
+                swift.set账面余额(inputfile.get币种(i),inputfile.get交易时间(i),余额.setScale(2,BigDecimal.ROUND_HALF_UP),sCurType);
 
 
                 swift.setTail();
@@ -233,10 +224,11 @@ public class JFswift extends JFrame {
                 swift.resetMt940();
                 list = new ArrayList<F61_86>();
             }
-            ;
+
         }
         try {
             PrintWriter pw=new PrintWriter(outSwiftFile);
+            buffer.delete(buffer.lastIndexOf("\n")-1,buffer.lastIndexOf("\n")+1);
             pw.print(buffer);
             pw.flush();
             pw.close();

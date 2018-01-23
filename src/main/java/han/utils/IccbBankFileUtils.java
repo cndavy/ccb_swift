@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public interface IccbBankFileUtils {
     void readerFile(String path);
 
-    String get账号();
+    String get账号(int i);
 
     int get总交易笔数();
 

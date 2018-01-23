@@ -56,7 +56,7 @@ public class PdfUtils implements IccbBankFileUtils{
         }
     }
 
-    public String get账号() {
+    public String get账号( int i ) {
        return stripper.getTextForRegion("0_0").replace("\r\n","");
 
     }

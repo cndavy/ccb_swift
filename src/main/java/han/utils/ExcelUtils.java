@@ -27,6 +27,7 @@ public class ExcelUtils implements IccbBankFileUtils {
         return ourInstance;
     }
     private   Workbook wbWorkbook = null;
+    private  int Count;
     private ExcelUtils() {
         ddf1.setMaximumFractionDigits(2);
     }
@@ -64,112 +65,117 @@ public class ExcelUtils implements IccbBankFileUtils {
         return null;
     }
     @Override
-    public String get账号(){
-        return  readCell(3,1).getStringCellValue();
+    public String get账号( int i){
+        return  readCell(1+i,0).getStringCellValue();
     }
-    public double get借方交易笔数 (){
-        return  (readCell(6,3).getNumericCellValue());
-    }
-    public double get贷方交易笔数(){
-        return  (readCell(7,3).getNumericCellValue());
-    }
+
     @Override
     public int get总交易笔数(){
-        return  (int)(get借方交易笔数() +   get贷方交易笔数());
+        int i =0 ;
+        while  (readCell(i,0)!=null){
+            i++;
+        }
+        return  i-1  ;
     }
 
     @Override
     public  String get交易时间(int i){
-       return  readCell(10+i,0).getStringCellValue().substring(2,8);
+       return  readCell(1+i,2).getStringCellValue().substring(2,8);
     }
     @Override
     public  String getEntryDate(int i){
-        return  readCell(10+i,0).getStringCellValue().substring(4,8);
+        return  readCell(1+i,2).getStringCellValue().substring(4,8);
     }
     @Override
     public BigDecimal get借方发生额(int i){
-        BigDecimal bigDecimal = new BigDecimal(readCell(10 + i, 1).getNumericCellValue());
+        BigDecimal bigDecimal = new BigDecimal(readCell( 1+i, 3).getNumericCellValue());
         df.format(bigDecimal);
         return bigDecimal;
     }
     @Override
     public BigDecimal get贷方发生额(int i){
-        BigDecimal bigDecimal = new BigDecimal(readCell(10 + i, 2).getNumericCellValue());
+        BigDecimal bigDecimal = new BigDecimal(readCell(1+i, 4).getNumericCellValue());
         return bigDecimal;
     }
     @Override
     public BigDecimal get余额(int i){
-        BigDecimal bigDecimal = new BigDecimal(readCell(10 + i, 3).getNumericCellValue());
+        BigDecimal bigDecimal = new BigDecimal(readCell( 1+i, 5).getNumericCellValue());
         return bigDecimal;
     }
-    @Override
-    public  String get记账日期(int i){
-        if (readCell(10+i,8)!=null)
-           return       readCell(10+i,8).getStringCellValue().substring(2,8);
-        else return  null;
-    }
+
     @Override
     public  String get币种(int i){
-         String cur= readCell(10+i,4).getStringCellValue();
+         String cur= readCell(1+i,6).getStringCellValue();
         return new CurUtils(cur).invoke();
     }
 
     @Override
     public  String get对方户名(int i){
-        return readCell(10+i,5).getStringCellValue();
+        return readCell(1+i,7).getStringCellValue();
 
     }
     @Override
     public  String get对方账号(int i){
-        return readCell(10+i,6).getStringCellValue();
+        return readCell(1+i,8).getStringCellValue();
 
     }
     @Override
     public  String get对方开户机构(int i){
-        return readCell(10+i,7).getStringCellValue();
+        return readCell(1+i,9).getStringCellValue();
 
     }
-
+    @Override
+    public  String get记账日期(int i){
+        if (readCell( 1+i,10)!=null)
+            return       readCell( 1+i,10).getStringCellValue().substring(2,8);
+        else return  null;
+    }
     @Override
     public  String get摘要(int i){
-        return readCell(10+i,9).getStringCellValue();
+        return readCell(1+i,11).getStringCellValue();
 
     }
 
     @Override
     public  String get备注(int i){
-        return readCell(10+i,10).getStringCellValue();
+        return readCell(1+i,12).getStringCellValue();
 
     }
     @Override
     public  String get账户明细编号(int i){
-        return readCell(10+i,11).getStringCellValue().split("-")[0];
+
+
+        String s=readCell(1+i,13).getStringCellValue().split("-")[0];
+        if (s.length()>5) {
+            return   s.substring(s.length()-5,s.length());
+        }
+        return s;
 
     }
     @Override
     public  String get交易流水号(int i){
-        return readCell(10+i,11).getStringCellValue().split("-")[1];
+        return readCell(1+i,13).getStringCellValue().split("-")[1];
 
     }
     @Override
     public  String get企业流水号(int i){
-        return readCell(10+i,12).getStringCellValue() ;
+        return readCell(1+i,14).getStringCellValue() ;
 
     }
     @Override
 
     public  String get凭证种类(int i){
-        return readCell(10+i,13).getStringCellValue() ;
+        return readCell(1+i,15).getStringCellValue() ;
 
     }
     @Override
     public  String get凭证号(int i){
-        return readCell(10+i,14).getStringCellValue() ;
+        return readCell(1+i,16).getStringCellValue() ;
 
     }
     @Override
     public  String get关联账户(int i){
-        return readCell(10+i,15).getStringCellValue() ;
+        return readCell(1+i,17).getStringCellValue() ;
 
     }
     @Test

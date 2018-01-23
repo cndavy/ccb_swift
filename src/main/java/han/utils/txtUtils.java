@@ -28,28 +28,73 @@ public class txtUtils implements IccbBankFileUtils {
         Scanner scanner= null;
         try {
             scanner = new Scanner(new File(path),"UTF-8");
+            String[] spl;
             while (scanner.hasNextLine()){
                 String txt= null;
                 txt =   (scanner.nextLine() );
-                System.out.print(txt);
-                String[] spl= txt.split(",");
-                for (int i=0 ;i<spl.length;i++){
-                    spl[i]=spl[i].substring(1,spl[i].length()-1);
-                }
-                //System.out.print("spl count="+ spl.length);
+               // System.out.print(txt);
+                spl= getSplit(txt);
+
+
                 lineList.add(spl);
 
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
 
+   private static String[] getSplit(String txt) throws Exception {
+        ArrayList<String> list = new ArrayList<String>();
+        int b=0;
+        int begin=0;
+        StringBuffer buff=new StringBuffer();
+        int iLen= txt.length();
+        for (int i =0 ;i<iLen;i++){
+            String s=txt.substring(i,i+1);
+            switch (b){
+                case 0:
+                    if (s.equals("\"")){
+                        b=1;
+                        begin=i;
+                        continue;
+                    }else
+                        throw new Exception("没有引号");
+                case 1:  // 进入 引号中
+                    if (s.equals("\"")) {
+                        b=2;
+
+                        continue;
+                    }else {
+                        buff.append(s);
+                        continue;
+                    }
+                case 2:
+                    if (s.equals("\"")) { //字段中出现 引号  "asdfasd "" qweqwe"
+                      buff.append("\"");
+                        b=1;
+                    } else if (s.equals(",")){
+                        b=0;
+                        list.add(buff.toString());
+                        buff=new StringBuffer();
+                    }
+
+
+            }
+        }
+       int resultSize = list.size();
+       String[] result = new String[resultSize];
+       return list.subList(0, resultSize).toArray(result);
+
+    }
+
     @Override
-    public String get账号() {
+    public String get账号(int i ) {
         if (lineList.size()>1){
-            return  lineList.get(1)[0];
+            return  lineList.get(i+1)[0];
         }
         return null;
     }
@@ -127,7 +172,11 @@ public class txtUtils implements IccbBankFileUtils {
 
     @Override
     public String get账户明细编号(int i) {
-        return lineList.get(i+1)[13].split("-")[0];
+        String s=lineList.get(i+1)[13].split("-")[0];
+        if (s.length()>5) {
+            return   s.substring(s.length()-5,s.length());
+        }
+        return   s ;
     }
 
     @Override
@@ -153,5 +202,15 @@ public class txtUtils implements IccbBankFileUtils {
     @Override
     public String get关联账户(int i) {
         return lineList.get(i+1)[17];
+    }
+
+    public  static void main(String [] args){
+        try {
+          String [] ss=  txtUtils.getSplit("\"37101985510050403879\",\"青岛海尔开利冷冻设备有限公司\",\"20180102 14:48:01\",\"0.00\",\"1492587.17\",\"185909602.41\",\"人民币元\",\"上饶市大润发超市有限公司\",\"1512211009000282430\",\"中国工商银行上饶县支行\",\"20180102\",\"自定义\",\",,\",\"104964-3710800000N2P70EKKO\",\"\",\"电汇凭证\" "  );
+
+            System.out.println(ss[12]);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
